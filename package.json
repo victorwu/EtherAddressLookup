@@ -8,17 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/409H/EtherAddressLookup.git"
+    "url": "git+https://github.com/victorwu/EtherAddressLookup.git"
   },
   "keywords": [
     "Ethereum",
     "security",
     "blacklist"
   ],
-  "author": "Harry Denley",
+  "author": "Victor Wu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/409H/EtherAddressLookup/issues"
+    "url": "https://github.com/victorwu/EtherAddressLookup/issues"
   },
-  "homepage": "https://github.com/409H/EtherAddressLookup#readme"
+  "homepage": "https://github.com/victorwu/EtherAddressLookup#readme",
+  "devDependencies": {
+    "mocha": "^4.1.0"
+  }
 }
