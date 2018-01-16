@@ -4,7 +4,7 @@
   "description": "A web extension for blocking ethereum phishing websites.",
   "main": "blacklists/domains.json",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/victorwu/EtherAddressLookup#readme",
   "devDependencies": {
-    "mocha": "^4.1.0"
+    "mocha": "^4.1.0",
+    "web3": "^1.0.0-beta.27"
   }
 }
