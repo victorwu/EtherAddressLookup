@@ -375,6 +375,7 @@ class EtherAddressLookup {
         objHoverNodeContent.innerHTML = "<p id='ext-etheraddresslookup-fetching_data_"+intUniqueId+"'><strong>Fetching Data...</strong></p>";
         objHoverNodeContent.innerHTML += "<div id='ext-etheraddresslookup-address_stats_hover_node_error_"+intUniqueId+"' class='ext-etheraddresslookup-address_stats_hover_node_error'></div>";
         objHoverNodeContent.innerHTML += "<div id='ext-etheraddresslookup-address_stats_hover_node_ok_"+intUniqueId+"' class='ext-etheraddresslookup-address_stats_hover_node_ok'></div>";
+        objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-currentblocknumber"+intUniqueId+"'></span>";
         objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-address_balance_"+intUniqueId+"'></span>";
         objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-transactions_out_"+intUniqueId+"'></span>";
         objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-contract_address_"+intUniqueId+"'></span>";
@@ -387,6 +388,60 @@ class EtherAddressLookup {
             var web3 = new Web3(new Web3.providers.HttpProvider(objResponse.resp));
             var str0xAddress = this.getAttribute("data-address");
             let objHoverNodeContent = this.children[1].children[0];
+            var syncInfo;
+
+
+            // Get current block number of the latest sync
+            web3.eth.isSyncing(function (error, sync) {
+                
+                // stop all app activity
+                if(!error) {
+
+                    // using "true" so all filters stopped but not web3.eth.syncing polling
+                    if(sync === true) {
+                        web3.reset(true);
+                        updateBlockNum(sync);
+                    }
+
+                    // show sync info
+                    else if(sync) {
+                        syncInfo = sync;
+                    }
+
+                    // run the app
+                    else {
+                    }
+                }
+            });
+            var updateBlockNum = function (sync){
+                console.log("here");
+
+                if(objHoverNodeContent.children[0].id == "ext-etheraddresslookup-fetching_data_"+intUniqueId) {
+                    objHoverNodeContent.children[0].style.display = 'none';
+                }
+
+                var blockNum = "";
+                // if(!sync) {
+                //     blockNum = -1;
+                //     objHoverNodeContent.querySelector("#ext-etheraddresslookup-address_stats_hover_node_error_"+intUniqueId).style.display = "inline";
+                // } else {
+                    objHoverNodeContent.querySelector("#ext-etheraddresslookup-address_stats_hover_node_ok_"+intUniqueId).style.display = "inline";
+                    // blockNum = web3.fromWei(result.toString(10), "ether").toLocaleString("en-US", {maximumSignificantDigits: 9});
+                    // blockNum = result.currentBlock;
+
+                    // Get current block number
+                    blockNum = web3.eth.blockNumber;
+
+                    var objBlockNum = objHoverNodeContent.querySelector("#ext-etheraddresslookup-currentblocknumber"+intUniqueId);
+                    objBlockNum.innerHTML += "<small>Current Block #: "+ blockNum + "</small>";
+                // }
+
+
+                console.log("blocknum" + blockNum);
+                // alert("blocknum" + blockNum);
+            };
+
+            updateBlockNum(syncInfo);
 
             //Get transaction count
             web3.eth.getTransactionCount(str0xAddress, function(error, result) {
