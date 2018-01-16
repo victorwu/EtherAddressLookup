@@ -391,57 +391,16 @@ class EtherAddressLookup {
             
 
 
-            // Check if syncing
-            // var syncInfo;
-            // web3.eth.isSyncing(function (error, sync) {
-                
-            //     // stop all app activity
-            //     if(!error) {
-
-            //         // using "true" so all filters stopped but not web3.eth.syncing polling
-            //         if(sync === true) {
-            //             web3.reset(true);
-            //             updateBlockNum(sync);
-            //         }
-
-            //         // show sync info
-            //         else if(sync) {
-            //             syncInfo = sync;
-            //         }
-
-            //         // run the app
-            //         else {
-            //         }
-            //     }
-            // });
-            var updateBlockNum = function (sync){
-                // console.log("here");
-
+            var updateBlockNum = function (){
                 if(objHoverNodeContent.children[0].id == "ext-etheraddresslookup-fetching_data_"+intUniqueId) {
                     objHoverNodeContent.children[0].style.display = 'none';
                 }
 
-                var blockNum = "";
-                // if(!sync) {
-                //     blockNum = -1;
-                //     objHoverNodeContent.querySelector("#ext-etheraddresslookup-address_stats_hover_node_error_"+intUniqueId).style.display = "inline";
-                // } else {
-                    // objHoverNodeContent.querySelector("#ext-etheraddresslookup-address_stats_hover_node_ok_"+intUniqueId).style.display = "inline";
-                    // blockNum = web3.fromWei(result.toString(10), "ether").toLocaleString("en-US", {maximumSignificantDigits: 9});
-                    // blockNum = result.currentBlock;
-
-                    // Get current block number
-                    blockNum = web3.eth.blockNumber;
-
-                    var objBlockNum = objHoverNodeContent.querySelector("#ext-etheraddresslookup-currentblocknumber"+intUniqueId);
-                    objBlockNum.innerHTML += "<small>Current Block #: "+ blockNum + "</small>";
-                // }
-
-
-                // console.log("blocknum" + blockNum);
-                // alert("blocknum" + blockNum);
-            // };
-            updateBlockNum(syncInfo);
+                // Add current block number
+                var objBlockNum = objHoverNodeContent.querySelector("#ext-etheraddresslookup-currentblocknumber"+intUniqueId);
+                objBlockNum.innerHTML += "<small>Current Block #: "+ web3.eth.blockNumber + "</small>";
+            };
+            updateBlockNum();
 
             //Get transaction count
             web3.eth.getTransactionCount(str0xAddress, function(error, result) {
