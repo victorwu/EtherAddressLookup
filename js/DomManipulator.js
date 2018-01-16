@@ -375,10 +375,10 @@ class EtherAddressLookup {
         objHoverNodeContent.innerHTML = "<p id='ext-etheraddresslookup-fetching_data_"+intUniqueId+"'><strong>Fetching Data...</strong></p>";
         objHoverNodeContent.innerHTML += "<div id='ext-etheraddresslookup-address_stats_hover_node_error_"+intUniqueId+"' class='ext-etheraddresslookup-address_stats_hover_node_error'></div>";
         objHoverNodeContent.innerHTML += "<div id='ext-etheraddresslookup-address_stats_hover_node_ok_"+intUniqueId+"' class='ext-etheraddresslookup-address_stats_hover_node_ok'></div>";
-        objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-currentblocknumber"+intUniqueId+"'></span>";
         objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-address_balance_"+intUniqueId+"'></span>";
         objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-transactions_out_"+intUniqueId+"'></span>";
         objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-contract_address_"+intUniqueId+"'></span>";
+        objHoverNodeContent.innerHTML += "<span id='ext-etheraddresslookup-currentblocknumber"+intUniqueId+"'></span>";
 
         objHoverNode.appendChild(objHoverNodeContent);
         this.appendChild(objHoverNode);
@@ -388,19 +388,7 @@ class EtherAddressLookup {
             var web3 = new Web3(new Web3.providers.HttpProvider(objResponse.resp));
             var str0xAddress = this.getAttribute("data-address");
             let objHoverNodeContent = this.children[1].children[0];
-            
 
-
-            var updateBlockNum = function (){
-                if(objHoverNodeContent.children[0].id == "ext-etheraddresslookup-fetching_data_"+intUniqueId) {
-                    objHoverNodeContent.children[0].style.display = 'none';
-                }
-
-                // Add current block number
-                var objBlockNum = objHoverNodeContent.querySelector("#ext-etheraddresslookup-currentblocknumber"+intUniqueId);
-                objBlockNum.innerHTML += "<small>Current Block #: "+ web3.eth.blockNumber + "</small>";
-            };
-            updateBlockNum();
 
             //Get transaction count
             web3.eth.getTransactionCount(str0xAddress, function(error, result) {
@@ -459,6 +447,19 @@ class EtherAddressLookup {
                     }
                 }
             });
+
+
+            // Get block number
+            var updateBlockNum = function (){
+                if(objHoverNodeContent.children[0].id == "ext-etheraddresslookup-fetching_data_"+intUniqueId) {
+                    objHoverNodeContent.children[0].style.display = 'none';
+                }
+
+                // Add current block number to span
+                var objBlockNum = objHoverNodeContent.querySelector("#ext-etheraddresslookup-currentblocknumber"+intUniqueId);
+                objBlockNum.innerHTML += "<small>Current Block #: "+ web3.eth.blockNumber + "</small>";
+            };
+            updateBlockNum();
 
             if(objResponse.resp.includes("quiknode.io")) {
                 objHoverNodeContent.innerHTML += "<a href='https://quiknode.io/?ref=EtherAddressLookup' target='_blank' title='RPC node managed by Quiknode.io'><img src='" + chrome.runtime.getURL("/images/powered-by-quiknode.png") + "' /></a>";
